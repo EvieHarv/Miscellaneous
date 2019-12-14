@@ -3,7 +3,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class App extends JavaPlugin {
     @Override
     public void onEnable() {
-        getLogger().info("Hello, SpigotMC!");
+        getLogger().info("MinecraftRush initalizing.");
+        getServer().getPluginManager().registerEvents(new listen(), this);
     }
     @Override
     public void onDisable() {
