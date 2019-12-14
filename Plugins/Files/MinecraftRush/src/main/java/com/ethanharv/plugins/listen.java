@@ -1,5 +1,4 @@
 package com.ethanharv.plugins;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -7,7 +6,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 /**
  * listen
  */
-public class listen implements Listener
+public class Listen implements Listener
 {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event)
