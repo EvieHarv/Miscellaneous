@@ -7,6 +7,7 @@ public class App extends JavaPlugin
     {
         getLogger().info("MinecraftRush initalizing.");
         getServer().getPluginManager().registerEvents(new Listen(), this);
+        this.getCommand("rush").setExecutor(new CommandStartGame());
     }
     @Override
     public void onDisable() 

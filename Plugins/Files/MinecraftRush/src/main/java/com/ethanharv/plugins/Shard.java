@@ -6,17 +6,17 @@ package com.ethanharv.plugins;
 public class Shard 
 {
     public int id;
-    public int x;
-    public int y;
-    public int z;
+    public double x;
+    public double y;
+    public double z;
     
     /**
      * Placeholder method.
      */
     public void NewShard() 
     {
-        this.x = 0;
+        this.x = 0.5;
         this.y = 80;
-        this.z = 0;
+        this.z = 36.5;
     }
 }

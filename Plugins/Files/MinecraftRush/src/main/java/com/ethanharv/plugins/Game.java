@@ -10,7 +10,7 @@ public class Game
 {
     public Player Player;
     public String mapId;
-    public Shard Shard;
+    public Shard Shard = new Shard();
     public int Attempts; 
     
     public int CurrTime;

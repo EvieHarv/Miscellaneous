@@ -1,3 +1,7 @@
 main: com.ethanharv.plugins.App
 name: MinecraftRush
 version: 0.1
+commands:
+  rush:
+    description: Begins a new game.
+    usage: /rush
