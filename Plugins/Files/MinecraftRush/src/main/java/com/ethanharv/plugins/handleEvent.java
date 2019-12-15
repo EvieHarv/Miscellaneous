@@ -1,6 +1,8 @@
 package com.ethanharv.plugins;
+
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 /**
@@ -15,14 +17,27 @@ public class handleEvent implements Listener
         try 
         {
             Game game = Register.games.get(event.getPlayer().getName());
-            if (game.DistFromStart(event.getPlayer().getLocation().getX(), event.getPlayer().getLocation().getZ()) > 4.5)
+            if (game.State == GameState.WAITING && game.inStartArea(event.getPlayer().getLocation().getX(), event.getPlayer().getLocation().getZ()))
             {
-                event.getPlayer().sendMessage("too far smh");
+                event.getPlayer().sendMessage("Starting");
+                game.StartAttempt();
             }
         } 
-        catch (Exception e) 
+        catch (Exception e) {}
+    }
+
+    @EventHandler
+    public void onBlockPlaced(BlockPlaceEvent event)
+    {
+        try 
         {
-            //TODO: handle exception
-        }
+            Game game = Register.games.get(event.getPlayer().getName());
+            if (game.State == GameState.WAITING)
+            {
+                event.getPlayer().sendMessage("Starting");
+                game.StartAttempt();
+            }
+        } 
+        catch (Exception e) {}
     }
 }
