@@ -9,16 +9,27 @@ import org.bukkit.entity.Player;
 public class Game 
 {
     public Player Player;
-    public String mapId;
+    public String MapId = "";
     public Shard Shard = new Shard();
-    public int Attempts; 
+    public int Attempts = 0; 
     
-    public int CurrTime;
-    public int BestTime;
+    public int CurrTime = 0;
+    public int BestTime = 0;
+    public GameState State = GameState.WAITING;
 
-    public void StartGame() 
+    public void StartGame()
     {
-        this.Shard.NewShard();
+        this.Shard.StartShard();
         this.Player.teleport(new Location(this.Player.getWorld(), Shard.x, Shard.y, Shard.z));
     }
+
+    public double DistFromStart(double x, double z)
+    {
+        return Math.sqrt(Math.pow(this.Shard.x-x, 2) + Math.pow(this.Shard.z-z, 2));
+    }
+}
+
+enum GameState
+{
+    WAITING, PLAYING, FINISHED;
 }

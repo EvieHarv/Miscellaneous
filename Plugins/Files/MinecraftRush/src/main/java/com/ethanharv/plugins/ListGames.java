@@ -6,18 +6,17 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * CommandStart
+ * ListGames
  */
-public class CommandStartGame implements CommandExecutor 
-{
+public class ListGames implements CommandExecutor {
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        if (sender instanceof Player)
+        Player player = (Player) sender;
+        player.sendMessage("Games:");
+        for(Game game : Register.games.values().toArray(new Game[0]))
         {
-            Game game = new Game();
-            Register.games.put(sender.getName(), game);
-            game.Player = (Player) sender;
-            game.StartGame();
+            player.sendMessage(game.Player.getName() + "'s game.");
         }
         return true;
     }

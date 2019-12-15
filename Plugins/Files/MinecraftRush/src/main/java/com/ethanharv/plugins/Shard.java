@@ -13,7 +13,7 @@ public class Shard
     /**
      * Placeholder method.
      */
-    public void NewShard() 
+    public void StartShard() 
     {
         this.x = 0.5;
         this.y = 80;

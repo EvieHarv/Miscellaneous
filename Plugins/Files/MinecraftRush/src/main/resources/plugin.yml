@@ -5,3 +5,6 @@ commands:
   rush:
     description: Begins a new game.
     usage: /rush
+  games:
+    description: Lists Active Games
+    usage: /games
