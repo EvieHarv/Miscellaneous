@@ -18,15 +18,24 @@ public class HandleEvent implements Listener
         // get game instance
         try 
         {
-            Game game = Register.games.get(event.getPlayer().getName());
-            if (game.State == GameState.WAITING && game.inStartArea(event.getPlayer().getLocation().getX(), event.getPlayer().getLocation().getZ()))
+            Game game = Register.games.get(event.getPlayer().getUniqueId());
+
+            // Checks if player is in start area
+            if (game.State == GameState.WAITING && game.inStartArea(event.getPlayer().getLocation().getX(), event.getPlayer().getLocation().getZ())) 
             {
                 event.getPlayer().sendMessage("Starting");
                 game.StartAttempt();
             }
+            // Is player finished?
             else if (game.State == GameState.PLAYING && event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.PRISMARINE)
             {
-                game.State = GameState.FINISHED;
+                game.finishGame();
+            }
+            // Player Has Fallen off of map.
+            else if (game.State == GameState.PLAYING && event.getPlayer().getLocation().getY() < 1) 
+            {
+                event.getPlayer().sendMessage("Map failed... Restarting.");
+                game.restartGame();
             }
         } 
         catch (Exception e) {}
@@ -37,11 +46,16 @@ public class HandleEvent implements Listener
     {
         try 
         {
-            Game game = Register.games.get(event.getPlayer().getName());
+            Game game = Register.games.get(event.getPlayer().getUniqueId());
             if (game.State == GameState.WAITING)
             {
                 event.getPlayer().sendMessage("Starting");
                 game.StartAttempt();
+                game.Blocks.add(event.getBlock());
+            }
+            else if (game.State == GameState.PLAYING)
+            {
+                game.Blocks.add(event.getBlock());
             }
         } 
         catch (Exception e) {}
