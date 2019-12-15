@@ -17,8 +17,8 @@ public class Game {
     public Shard Shard = new Shard();
     public int Attempts = 0;
 
-    public int CurrTime = 0;
-    public int BestTime = 0;
+    public long LastTime = 0; // in millis
+    public long BestTime = 0; // in millis
     public ZonedDateTime lastStartTime = ZonedDateTime.now();
     public GameState State = GameState.WAITING;
 
@@ -42,11 +42,20 @@ public class Game {
         {
             @Override
             public void run() {
-                plr.sendMessage(String.valueOf(ChronoUnit.MILLIS.between(LastStart, ZonedDateTime.now())));
+                plr.sendMessage(String.valueOf(((double)ChronoUnit.MILLIS.between(LastStart, ZonedDateTime.now()))/1000));
                 if (state == GameState.PLAYING) 
                 {
                     updateTime();
-                }        
+                }
+                else
+                {
+                    LastTime = ChronoUnit.MILLIS.between(LastStart, ZonedDateTime.now());
+                    if (LastTime < BestTime)
+                    {
+                        BestTime = LastTime;
+                    } 
+                    plr.sendMessage("Finished in " + ((double)LastTime)/1000 + " seconds!");
+                }
             }
         }, 1L);
     }

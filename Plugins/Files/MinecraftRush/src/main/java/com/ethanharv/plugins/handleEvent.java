@@ -1,5 +1,7 @@
 package com.ethanharv.plugins;
 
+import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -21,6 +23,10 @@ public class handleEvent implements Listener
             {
                 event.getPlayer().sendMessage("Starting");
                 game.StartAttempt();
+            }
+            else if (game.State == GameState.PLAYING && event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.PRISMARINE)
+            {
+                game.State = GameState.FINISHED;
             }
         } 
         catch (Exception e) {}
