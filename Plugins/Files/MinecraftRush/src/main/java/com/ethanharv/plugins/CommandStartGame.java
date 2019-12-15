@@ -14,6 +14,11 @@ public class CommandStartGame implements CommandExecutor
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player)
         {
+            if (Register.games.keySet().contains(sender.getName())) 
+            {
+                sender.sendMessage("bro thats kinda cringe you can't start a new one when you already have one.");
+                return false;
+            }
             Game game = new Game();
             Register.games.put(sender.getName(), game);
             game.Player = (Player) sender;

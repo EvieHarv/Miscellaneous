@@ -6,13 +6,14 @@ public class App extends JavaPlugin
     public void onEnable() 
     {
         getLogger().info("MinecraftRush initalizing.");
-        getServer().getPluginManager().registerEvents(new handleEvent(), this);
+        getServer().getPluginManager().registerEvents(new HandleEvent(), this);
         this.getCommand("rush").setExecutor(new CommandStartGame());
-        this.getCommand("games").setExecutor(new ListGames());
+        this.getCommand("games").setExecutor(new CommandListGames());
+        getLogger().info("MinecraftRush initalized.");
     }
     @Override
     public void onDisable() 
     {
-        getLogger().info("See you again, SpigotMC!");
+        getLogger().info("Disabling MinecraftRush...");
     }
 }

@@ -11,7 +11,7 @@ public class Shard
     public double z;
     
     /**
-     * Placeholder method.
+     * Placeholder method. Need to actually update with dynamic shard creation. The xyz represents the shard's midpoint at the starting y-level.
      */
     public void StartShard() 
     {
