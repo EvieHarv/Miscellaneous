@@ -5,6 +5,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 /**
@@ -44,20 +45,38 @@ public class HandleEvent implements Listener
     @EventHandler
     public void onBlockPlaced(BlockPlaceEvent event)
     {
-        try 
+        if (Register.games.keySet().contains(event.getPlayer().getUniqueId())){
+            try 
+            {
+                Game game = Register.games.get(event.getPlayer().getUniqueId());
+                if (game.State == GameState.WAITING)
+                {
+                    event.getPlayer().sendMessage("Starting");
+                    game.StartAttempt();
+                    game.Blocks.add(event.getBlock());
+                    game.refillItems();
+                }
+                else if (game.State == GameState.PLAYING)
+                {
+                    game.Blocks.add(event.getBlock());
+                    game.refillItems();
+                }
+            } 
+            catch (Exception e) {}
+        }
+        else // They don't have a game
         {
-            Game game = Register.games.get(event.getPlayer().getUniqueId());
-            if (game.State == GameState.WAITING)
+            // TODO: Check for perms for being allowed to place block. If not, cancel event.
+            if (true)
             {
-                event.getPlayer().sendMessage("Starting");
-                game.StartAttempt();
-                game.Blocks.add(event.getBlock());
+
             }
-            else if (game.State == GameState.PLAYING)
-            {
-                game.Blocks.add(event.getBlock());
-            }
-        } 
-        catch (Exception e) {}
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDamage(EntityDamageEvent event)
+    {
+        event.setCancelled(true);
     }
 }

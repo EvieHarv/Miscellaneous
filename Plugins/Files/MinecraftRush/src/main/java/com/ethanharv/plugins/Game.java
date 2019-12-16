@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
 
 /**
@@ -27,6 +28,7 @@ public class Game {
     public ZonedDateTime lastStartTime = ZonedDateTime.now();
     public GameState State = GameState.WAITING;
     public List<Block> Blocks = new ArrayList<Block>();
+    public ItemStack UserBlock = new ItemStack(Material.WOOL, 1); // TODO: Grab from db, give to player in #StartGame
 
     public void StartGame() {
         this.Shard.StartShard();
@@ -36,6 +38,7 @@ public class Game {
     public void StartAttempt() {
         this.State = GameState.PLAYING;
         this.lastStartTime = ZonedDateTime.now();
+        this.Attempts += 1;
         updateTime();
     }
 
@@ -108,6 +111,22 @@ public class Game {
     {
         return !((Math.abs(this.Shard.x-x) <= 4.5) && (Math.abs(this.Shard.z-z) <= 4.5));
     }
+
+    public void refillItems()
+    {
+        try 
+        { 
+            BukkitScheduler sch = Bukkit.getServer().getScheduler();
+            sch.scheduleSyncDelayedTask(App.getPlugin(App.class), new Runnable()
+            {
+                @Override
+                public void run() {
+                    Player.getInventory().addItem(UserBlock);
+                }
+            }, 1L);    
+        } catch (Exception e) { System.out.println("Error in BlockPlaceEvent - Waiting."); System.out.println(e.toString()); }
+    }
+
 }
 
 enum GameState
