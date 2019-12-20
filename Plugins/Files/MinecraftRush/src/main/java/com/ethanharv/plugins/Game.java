@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -17,62 +18,71 @@ import org.bukkit.scheduler.BukkitScheduler;
  * Game
  */
 public class Game {
-    public Player Player;
-    public String MapId = "";
-    public Shard Shard = new Shard();
+    public Player player;
+    public Map map = new Map();
+    public Shard shard = new Shard();
     
 
-    public int Attempts = 0;
-    public long LastTime = 0; // in millis
-    public long BestTime = 0; // in millis - TODO: Grab from db in #StartGame
+    public int attempts = 0;
+    public long lastTime = 0; // in millis
+    public long bestTime = 0; // in millis - TODO: Grab from db in #StartGame
     public ZonedDateTime lastStartTime = ZonedDateTime.now();
-    public GameState State = GameState.WAITING;
-    public List<Block> Blocks = new ArrayList<Block>();
-    public ItemStack UserBlock = new ItemStack(Material.WOOL, 1); // TODO: Grab from db, give to player in #StartGame
+    public GameState state = GameState.WAITING;
+    public List<Block> blocks = new ArrayList<Block>();
+    public ItemStack userBlock = new ItemStack(Material.WOOL, 1); // TODO: Grab from db, give to player in #StartGame
 
-    public void StartGame() {
-        this.Shard.StartShard();
-        this.Player.teleport(new Location(this.Player.getWorld(), Shard.x, Shard.y, Shard.z));
+    public void StartGame(Player player) {
+        this.player = player;
+        this.map.intializeMap();
+        this.shard.StartShard();
+        this.player.teleport(new Location(this.player.getWorld(), shard.x, shard.y, shard.z));
     }
 
     public void StartAttempt() {
-        this.State = GameState.PLAYING;
+        this.state = GameState.PLAYING;
         this.lastStartTime = ZonedDateTime.now();
-        this.Attempts += 1;
+        this.attempts += 1;
         updateTime();
     }
 
     public void updateTime() {
-        // Wrapped in try-catch so that if player leaves it can free resources by erroring out. (hopefully? haven't implemented fully yet so we'll see.)
+        // Wrapped in try-catch so that if game errors occur it can free resources by erroring out. (hopefully? haven't implemented fully yet so we'll see.)
         try { 
             BukkitScheduler sch = Bukkit.getServer().getScheduler();
             sch.scheduleSyncDelayedTask(App.getPlugin(App.class), new Runnable()
             {
                 @Override
-                public void run() {
-
-                    if (State == GameState.PLAYING) 
+                public void run() 
+                {
+                    if (state == GameState.PLAYING) 
                     {
-                        Player.sendMessage(String.valueOf(((double)ChronoUnit.MILLIS.between(lastStartTime, ZonedDateTime.now()))/1000));
+                        String sentTime = String.format("%.3f", ((double)ChronoUnit.MILLIS.between(lastStartTime, ZonedDateTime.now()))/1000);
+                        PlayerUI.sendActionBar(player, ChatColor.DARK_AQUA + "Current Time | " + ChatColor.AQUA + sentTime + ChatColor.DARK_AQUA + " | Current Time");
                         updateTime();
-                    }
-                    else if (State == GameState.FINISHED)
+                    }   
+                    else if (state == GameState.FINISHED)
                     {
-                        LastTime = ChronoUnit.MILLIS.between(lastStartTime, ZonedDateTime.now());
-                        if (LastTime < BestTime)
+                        lastTime = ChronoUnit.MILLIS.between(lastStartTime, ZonedDateTime.now());
+                        if (lastTime < bestTime)
                         {
-                            BestTime = LastTime;
-                        } 
-                        Player.sendMessage("Finished in " + ((double)LastTime)/1000 + " seconds!");
+                            bestTime = lastTime;
+                        }
+                        String sentTime = String.format("%.3f", ((double)lastTime)/1000);
+                        PlayerUI.sendActionBar(player, ChatColor.DARK_AQUA + "---===---Finished---===---");
+                        player.sendMessage(ChatColor.YELLOW + "=====================================");
+                        player.sendMessage(" ");
+                        player.sendMessage( ChatColor.DARK_AQUA + "Finished in " + ChatColor.AQUA + sentTime + ChatColor.DARK_AQUA + " seconds!");
+                        player.sendMessage(" ");
+                        player.sendMessage(ChatColor.YELLOW + "=====================================");
                     }
-                    else if (State == GameState.WAITING)
+                    else if (state == GameState.WAITING)
                     {
-                        LastTime = 0;
+                        lastTime = 0;
                         // Do nothing else ig.
                     }
 
                 }
-            }, 1L);    
+            }, 1L);
         } 
         catch (Exception e) 
         {
@@ -84,23 +94,23 @@ public class Game {
 
     public void restartGame()
     {
-        this.Player.teleport(new Location(this.Player.getWorld(), this.Shard.x, this.Shard.y, this.Shard.z));
-        this.State = GameState.WAITING;
+        this.player.teleport(new Location(this.player.getWorld(), this.shard.x, this.shard.y, this.shard.z));
         this.resetBlocks();
+        this.state = GameState.WAITING;
     }
 
     public void finishGame()
     {
-        this.State = GameState.FINISHED;
+        this.state = GameState.FINISHED;
         this.resetBlocks();
-        Register.games.remove(this.Player.getUniqueId());
+        Register.games.remove(this.player.getUniqueId());
     }
 
     public void resetBlocks()
     {
-        if (this.Blocks.size() > 0)
+        if (this.blocks.size() > 0)
         {
-            for (Block block : this.Blocks)
+            for (Block block : this.blocks)
             {
                 block.setType(Material.AIR);
             }
@@ -109,7 +119,7 @@ public class Game {
 
     public boolean inStartArea(double x, double z)
     {
-        return !((Math.abs(this.Shard.x-x) <= 4.5) && (Math.abs(this.Shard.z-z) <= 4.5));
+        return !((Math.abs(this.shard.x-x) <= 4.5) && (Math.abs(this.shard.z-z) <= 4.5));
     }
 
     public void refillItems()
@@ -121,7 +131,7 @@ public class Game {
             {
                 @Override
                 public void run() {
-                    Player.getInventory().addItem(UserBlock);
+                    player.getInventory().addItem(userBlock);
                 }
             }, 1L);    
         } catch (Exception e) { System.out.println("Error in BlockPlaceEvent - Waiting."); System.out.println(e.toString()); }

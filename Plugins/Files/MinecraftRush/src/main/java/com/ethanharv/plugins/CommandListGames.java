@@ -17,7 +17,7 @@ public class CommandListGames implements CommandExecutor
         player.sendMessage("Games:");
         for(Game game : Register.games.values().toArray(new Game[0]))
         {
-            player.sendMessage(game.Player.getName() + "'s game.");
+            player.sendMessage(game.player.getName() + "'s game.");
         }
         return true;
     }

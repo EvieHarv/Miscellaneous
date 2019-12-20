@@ -8,6 +8,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import net.md_5.bungee.api.ChatColor;
+
 /**
  * listen
  */
@@ -22,20 +24,19 @@ public class HandleEvent implements Listener
             Game game = Register.games.get(event.getPlayer().getUniqueId());
 
             // Checks if player is in start area
-            if (game.State == GameState.WAITING && game.inStartArea(event.getPlayer().getLocation().getX(), event.getPlayer().getLocation().getZ())) 
+            if (game.state == GameState.WAITING && game.inStartArea(event.getPlayer().getLocation().getX(), event.getPlayer().getLocation().getZ())) 
             {
-                event.getPlayer().sendMessage("Starting");
                 game.StartAttempt();
             }
             // Is player finished?
-            else if (game.State == GameState.PLAYING && event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.PRISMARINE)
+            else if (game.state == GameState.PLAYING && event.getPlayer().getLocation().getBlock().getRelative(BlockFace.DOWN).getType() == Material.PRISMARINE)
             {
                 game.finishGame();
             }
             // Player Has Fallen off of map.
-            else if (game.State == GameState.PLAYING && event.getPlayer().getLocation().getY() < 1) 
+            else if (game.state == GameState.PLAYING && event.getPlayer().getLocation().getY() < game.map.minY) 
             {
-                event.getPlayer().sendMessage("Map failed... Restarting.");
+                PlayerUI.sendActionBar(event.getPlayer(), ChatColor.YELLOW + "Map failed, restarting...");
                 game.restartGame();
             }
         } 
@@ -49,16 +50,15 @@ public class HandleEvent implements Listener
             try 
             {
                 Game game = Register.games.get(event.getPlayer().getUniqueId());
-                if (game.State == GameState.WAITING)
+                if (game.state == GameState.WAITING)
                 {
-                    event.getPlayer().sendMessage("Starting");
                     game.StartAttempt();
-                    game.Blocks.add(event.getBlock());
+                    game.blocks.add(event.getBlock());
                     game.refillItems();
                 }
-                else if (game.State == GameState.PLAYING)
+                else if (game.state == GameState.PLAYING)
                 {
-                    game.Blocks.add(event.getBlock());
+                    game.blocks.add(event.getBlock());
                     game.refillItems();
                 }
             } 
