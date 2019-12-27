@@ -67,10 +67,7 @@ public class HandleEvent implements Listener
         else // They don't have a game
         {
             // TODO: Check for perms for being allowed to place block. If not, cancel event.
-            if (true)
-            {
-
-            }
+            event.setCancelled(false);
         }
     }
 

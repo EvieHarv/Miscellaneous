@@ -29,13 +29,16 @@ public class Game {
     public ZonedDateTime lastStartTime = ZonedDateTime.now();
     public GameState state = GameState.WAITING;
     public List<Block> blocks = new ArrayList<Block>();
-    public ItemStack userBlock = new ItemStack(Material.WOOL, 1); // TODO: Grab from db, give to player in #StartGame
+    public ItemStack userBlock = new ItemStack(Material.WOOL, 1); // TODO: Grab from db
 
     public void StartGame(Player player) {
         this.player = player;
         this.map.intializeMap();
         this.shard.StartShard();
         this.player.teleport(new Location(this.player.getWorld(), shard.x, shard.y, shard.z));
+        this.player.getInventory().clear();
+        ItemStack block64 = userBlock.clone(); block64.setAmount(64); // Duplicate userBlock exactly, but as *64
+        this.player.getInventory().setItem(4, block64); // TODO: custom slot
     }
 
     public void StartAttempt() {
@@ -103,7 +106,8 @@ public class Game {
     {
         this.state = GameState.FINISHED;
         this.resetBlocks();
-        Register.games.remove(this.player.getUniqueId());
+        this.player.getInventory().clear();
+        Register.games.remove(this.player.getUniqueId()); // TODO: Actual Endscreen
     }
 
     public void resetBlocks()
