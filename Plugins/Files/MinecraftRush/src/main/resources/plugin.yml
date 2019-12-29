@@ -8,3 +8,9 @@ commands:
   games:
     description: Lists Active Games
     usage: /games
+  lobby:
+    description: Quits current game and sends you to the default lobby.
+    usage: /lobby
+  rs:
+    description: Restarts current game attempt
+    usage: /rs

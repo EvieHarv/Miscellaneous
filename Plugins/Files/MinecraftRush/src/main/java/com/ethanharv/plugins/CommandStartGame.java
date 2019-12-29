@@ -32,6 +32,10 @@ public class CommandStartGame implements CommandExecutor
             } catch (Exception e) { Bukkit.getServer().getLogger().info("ERROR: Couldn't find player in CommandStartGame : " + e.getMessage());}
 
         }
+        else
+        {
+            return false;
+        }
         return true;
     }
 }

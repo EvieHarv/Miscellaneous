@@ -45,6 +45,14 @@ public class HandleEvent implements Listener
                 PlayerUI.sendActionBar(event.getPlayer(), ChatColor.YELLOW + "Map failed, restarting...");
                 game.restartGame();
             }
+            else if (game.state == GameState.FINISHED)
+            {
+                if (event.getTo().getBlock().getRelative(BlockFace.DOWN).getType() != Material.PRISMARINE && 
+                    event.getTo().getBlock().getRelative(BlockFace.DOWN).getRelative(BlockFace.DOWN).getType() != Material.PRISMARINE) // Block below or 2 blocks below == prismarine
+                {
+                    event.setCancelled(true);
+                }
+            }
         } 
         catch (Exception e) {}
     }
