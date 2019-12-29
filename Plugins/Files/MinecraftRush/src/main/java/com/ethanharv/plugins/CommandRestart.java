@@ -14,6 +14,13 @@ public class CommandRestart implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (sender instanceof Player)
         {
+            try {
+                Game game = Register.games.get(((Player)sender).getUniqueId());
+                game.restartGame();
+                PlayerUI.sendActionBar(game.player, " ");
+            } catch (Exception e) {
+                sender.sendMessage("You don't currently have a game.");
+            }
             return true;
         }
         else

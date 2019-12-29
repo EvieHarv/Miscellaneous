@@ -60,6 +60,11 @@ public class Game {
                 @Override
                 public void run() 
                 {
+                    if (!Register.games.containsKey(player.getUniqueId()))
+                    {
+                        PlayerUI.sendActionBar(player, " ");
+                        return;
+                    }
                     if (state == GameState.PLAYING) 
                     {
                         String sentTime = String.format("%.3f", ((double)ChronoUnit.MILLIS.between(lastStartTime, ZonedDateTime.now()))/1000);
@@ -101,6 +106,7 @@ public class Game {
     public void restartGame()
     {
         this.player.teleport(new Location(this.player.getWorld(), this.shard.x, this.shard.y, this.shard.z));
+        for (Entity e : spawned){ e.remove(); }
         this.resetBlocks();
         this.player.getInventory().clear();
         ItemStack block64 = userBlock.clone(); block64.setAmount(64); // Duplicate userBlock exactly, but as *64
@@ -120,10 +126,12 @@ public class Game {
     {
         // TODO: reset shard
         this.resetBlocks();
+        this.player.getInventory().clear();
         for (Entity e : spawned)
         {
             e.remove();
         }
+        Register.games.remove(player.getUniqueId());
     }
 
     public void resetBlocks()
