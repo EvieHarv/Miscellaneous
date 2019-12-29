@@ -11,7 +11,7 @@ public class App extends JavaPlugin
         getLogger().info("MinecraftRush initalizing.");
         getServer().getPluginManager().registerEvents(new HandleEvent(), this);
         this.getCommand("rush").setExecutor(new CommandStartGame());
-        this.getCommand("games").setExecutor(new CommandListGames());
+        this.getCommand("game").setExecutor(new CommandListGames());
         this.getCommand("lobby").setExecutor(new CommandLobby());
         this.getCommand("rs").setExecutor(new CommandRestart());
         getLogger().info("MinecraftRush initalized.");
@@ -25,6 +25,7 @@ public class App extends JavaPlugin
             {
                 e.remove();
             }
+            game.player.getInventory().clear();
             game.player.teleport(new Location(game.player.getWorld(), .5, 81, .5));
         }
         getLogger().info("Disabling MinecraftRush...");

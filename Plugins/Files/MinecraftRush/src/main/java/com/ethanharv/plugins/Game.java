@@ -67,18 +67,18 @@ public class Game {
                     }
                     if (state == GameState.PLAYING) 
                     {
-                        String sentTime = String.format("%.3f", ((double)ChronoUnit.MILLIS.between(lastStartTime, ZonedDateTime.now()))/1000);
+                        String sentTime = normalizeTime(ChronoUnit.MILLIS.between(lastStartTime, ZonedDateTime.now()));
                         PlayerUI.sendActionBar(player, ChatColor.DARK_AQUA + "Current Time | " + ChatColor.AQUA + sentTime + ChatColor.DARK_AQUA + " | Current Time");
                         updateTime();
                     }   
                     else if (state == GameState.FINISHED)
                     {
                         lastTime = ChronoUnit.MILLIS.between(lastStartTime, ZonedDateTime.now());
-                        if (lastTime < bestTime)
+                        if (bestTime > lastTime || bestTime == 0)
                         {
                             bestTime = lastTime;
                         }
-                        String sentTime = String.format("%.3f", ((double)lastTime)/1000);
+                        String sentTime = normalizeTime(lastTime);
                         PlayerUI.sendActionBar(player, ChatColor.DARK_AQUA + "---===---Finished---===---");
                         player.sendMessage(ChatColor.YELLOW + "=====================================");
                         player.sendMessage(" ");
@@ -165,6 +165,11 @@ public class Game {
         } catch (Exception e) { System.out.println("Error in BlockPlaceEvent - Waiting."); System.out.println(e.toString()); }
     }
 
+
+    public static String normalizeTime(Long time) // TODO: Handle Min/Sec
+    {
+        return String.format("%.3f", ((double)time)/1000);
+    }
 }
 
 enum GameState

@@ -5,9 +5,9 @@ commands:
   rush:
     description: Begins a new game.
     usage: /rush
-  games:
-    description: Lists Active Games
-    usage: /games
+  game:
+    description: Lists game info.
+    usage: /game [Player]
   lobby:
     description: Quits current game and sends you to the default lobby.
     usage: /lobby
