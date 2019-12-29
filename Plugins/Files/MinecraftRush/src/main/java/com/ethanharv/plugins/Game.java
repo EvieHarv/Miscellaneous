@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -29,7 +30,9 @@ public class Game {
     public ZonedDateTime lastStartTime = ZonedDateTime.now();
     public GameState state = GameState.WAITING;
     public List<Block> blocks = new ArrayList<Block>();
+    public List<Entity> spawned = new ArrayList<Entity>();
     public ItemStack userBlock = new ItemStack(Material.WOOL, 1); // TODO: Grab from db
+    public int userSlot = 4; // TODO: grab from db
 
     public void StartGame(Player player) {
         this.player = player;
@@ -38,7 +41,7 @@ public class Game {
         this.player.teleport(new Location(this.player.getWorld(), shard.x, shard.y, shard.z));
         this.player.getInventory().clear();
         ItemStack block64 = userBlock.clone(); block64.setAmount(64); // Duplicate userBlock exactly, but as *64
-        this.player.getInventory().setItem(4, block64); // TODO: custom slot
+        this.player.getInventory().setItem(this.userSlot, block64);
     }
 
     public void StartAttempt() {
@@ -99,6 +102,9 @@ public class Game {
     {
         this.player.teleport(new Location(this.player.getWorld(), this.shard.x, this.shard.y, this.shard.z));
         this.resetBlocks();
+        this.player.getInventory().clear();
+        ItemStack block64 = userBlock.clone(); block64.setAmount(64); // Duplicate userBlock exactly, but as *64
+        this.player.getInventory().setItem(this.userSlot, block64);
         this.state = GameState.WAITING;
     }
 
@@ -107,7 +113,17 @@ public class Game {
         this.state = GameState.FINISHED;
         this.resetBlocks();
         this.player.getInventory().clear();
-        Register.games.remove(this.player.getUniqueId()); // TODO: Actual Endscreen
+        Endscreen.Show(this);
+    }
+
+    public void clearGame()
+    {
+        // TODO: reset shard
+        this.resetBlocks();
+        for (Entity e : spawned)
+        {
+            e.remove();
+        }
     }
 
     public void resetBlocks()
