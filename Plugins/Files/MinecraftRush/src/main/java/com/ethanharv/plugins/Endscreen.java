@@ -20,8 +20,16 @@ public class Endscreen {
         as.setCustomName(ChatColor.RED + "Return To Lobby  (/lobby)");
         as.setCustomNameVisible(true);
         as.setVisible(false);
-        as.setHealth(1);
         game.spawned.add((Entity) as);
+        ArmorStand bas = (ArmorStand) game.player.getWorld().spawnEntity(game.player.getLocation().add(2, 1, 2), EntityType.ARMOR_STAND);
+        bas.setGravity(false);
+        bas.setCanPickupItems(false);
+        bas.setCustomName(ChatColor.RED + "Return To Lobby  (/lobby)");
+        bas.setCustomNameVisible(false);
+        bas.setVisible(false);
+        game.spawned.add((Entity) bas);
+
+
 
         ArmorStand as2 = (ArmorStand) game.player.getWorld().spawnEntity(game.player.getLocation().add(-2, 0, 2), EntityType.ARMOR_STAND);
         as2.setGravity(false);
@@ -29,7 +37,14 @@ public class Endscreen {
         as2.setCustomName(ChatColor.GREEN + "Replay Map  (/rs)");
         as2.setCustomNameVisible(true);
         as2.setVisible(false);
-        as2.setHealth(1);
         game.spawned.add((Entity) as2);
+        ArmorStand bas2 = (ArmorStand) game.player.getWorld().spawnEntity(game.player.getLocation().add(-2, 1, 2), EntityType.ARMOR_STAND);
+        bas2.setGravity(false);
+        bas2.setCanPickupItems(false);
+        bas2.setCustomName(ChatColor.GREEN + "Replay Map  (/rs)");
+        bas2.setCustomNameVisible(false);
+        bas2.setVisible(false);
+        game.spawned.add((Entity) bas2);
+
     }
 }

@@ -40,6 +40,8 @@ public class CommandListGames implements CommandExecutor
             {
                 sender.sendMessage(ChatColor.LIGHT_PURPLE + game.player.getName() + "'s game.");
             }
+            sender.sendMessage(" ");
+            sender.sendMessage(ChatColor.YELLOW + "=====================================");
             return true;
         }
 
@@ -70,8 +72,10 @@ public class CommandListGames implements CommandExecutor
         sender.sendMessage(ChatColor.DARK_GREEN + "Player:           " + ChatColor.GRAY + game.player.getName());
         sender.sendMessage(ChatColor.DARK_GREEN + "Map:                " + ChatColor.GRAY + game.map.name);
         sender.sendMessage(ChatColor.DARK_GREEN + "Attempts:        " + ChatColor.GRAY + game.attempts);
-        sender.sendMessage(ChatColor.DARK_GREEN + "Best Time:       " + ChatColor.GRAY + (game.bestTime == 0 ? " " : Game.normalizeTime(game.bestTime) + "s")); // TODO: normalize
-        sender.sendMessage(ChatColor.DARK_GREEN + "Last Time:       " + ChatColor.GRAY + (game.lastTime == 0 ? " " : Game.normalizeTime(game.lastTime) + "s")); // TODO: normalize
+        sender.sendMessage(ChatColor.DARK_GREEN + "Best Time:       " + ChatColor.GRAY + (game.bestTime == 0 ? ChatColor.RED + "N/A" : Game.normalizeTime(game.bestTime) + "s"));
+        sender.sendMessage(ChatColor.DARK_GREEN + "Last Time:       " + ChatColor.GRAY + (game.lastTime == 0 ? ChatColor.RED + "Incomplete" : Game.normalizeTime(game.lastTime) + "s"));
+        sender.sendMessage(" ");
+        sender.sendMessage(ChatColor.YELLOW + "=====================================");
     }
 
 }

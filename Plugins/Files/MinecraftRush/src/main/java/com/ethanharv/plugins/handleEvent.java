@@ -108,7 +108,7 @@ public class HandleEvent implements Listener
     }
 
     @EventHandler
-    public void armourStandManipulate(PlayerArmorStandManipulateEvent event)
+    public void armourStandManipulate(PlayerArmorStandManipulateEvent event) // doesn't really need to exist but i like keeping it here
     {
         if(!event.getRightClicked().isVisible())
         {
