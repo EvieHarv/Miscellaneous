@@ -14,7 +14,7 @@ public class Endscreen {
     public static void Show(Game game)
     {
         // TODO: look direction?
-        ArmorStand as = (ArmorStand) game.player.getWorld().spawnEntity(game.player.getLocation().add(2, 0, 2), EntityType.ARMOR_STAND);
+        ArmorStand as = (ArmorStand) game.player.getWorld().spawnEntity(game.player.getLocation().add(2, -.5, 2), EntityType.ARMOR_STAND);
         as.setGravity(false);
         as.setCanPickupItems(false);
         as.setCustomName(ChatColor.RED + "Return To Lobby  (/lobby)");
@@ -31,7 +31,7 @@ public class Endscreen {
 
 
 
-        ArmorStand as2 = (ArmorStand) game.player.getWorld().spawnEntity(game.player.getLocation().add(-2, 0, 2), EntityType.ARMOR_STAND);
+        ArmorStand as2 = (ArmorStand) game.player.getWorld().spawnEntity(game.player.getLocation().add(-2, -.5, 2), EntityType.ARMOR_STAND);
         as2.setGravity(false);
         as2.setCanPickupItems(false);
         as2.setCustomName(ChatColor.GREEN + "Replay Map  (/rs)");

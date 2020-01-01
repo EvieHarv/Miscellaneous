@@ -69,11 +69,11 @@ public class CommandListGames implements CommandExecutor
         sender.sendMessage(ChatColor.GREEN + "Game Info:");
         sender.sendMessage(ChatColor.YELLOW + "=====================================");
         sender.sendMessage(" ");
-        sender.sendMessage(ChatColor.DARK_GREEN + "Player:           " + ChatColor.GRAY + game.player.getName());
-        sender.sendMessage(ChatColor.DARK_GREEN + "Map:                " + ChatColor.GRAY + game.map.name);
-        sender.sendMessage(ChatColor.DARK_GREEN + "Attempts:        " + ChatColor.GRAY + game.attempts);
-        sender.sendMessage(ChatColor.DARK_GREEN + "Best Time:       " + ChatColor.GRAY + (game.bestTime == 0 ? ChatColor.RED + "N/A" : Game.normalizeTime(game.bestTime) + "s"));
-        sender.sendMessage(ChatColor.DARK_GREEN + "Last Time:       " + ChatColor.GRAY + (game.lastTime == 0 ? ChatColor.RED + "Incomplete" : Game.normalizeTime(game.lastTime) + "s"));
+        sender.sendMessage(ChatColor.DARK_GREEN + "Player: " + ChatColor.GRAY + game.player.getName());
+        sender.sendMessage(ChatColor.DARK_GREEN + "Attempts: " + ChatColor.GRAY + game.attempts);
+        sender.sendMessage(ChatColor.DARK_GREEN + "Best Time: " + ChatColor.GRAY + (game.bestTime == 0 ? ChatColor.RED + "N/A" : Game.normalizeTime(game.bestTime) + "s"));
+        sender.sendMessage(ChatColor.DARK_GREEN + "Last Time: " + ChatColor.GRAY + (game.lastTime == 0 ? ChatColor.RED + "Incomplete" : Game.normalizeTime(game.lastTime) + "s"));
+        sender.sendMessage(ChatColor.DARK_GREEN + "Map: " + ChatColor.GRAY + game.map.name);
         sender.sendMessage(" ");
         sender.sendMessage(ChatColor.YELLOW + "=====================================");
     }
